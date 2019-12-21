@@ -44,7 +44,7 @@ class Hopalong:
             return 0.
 
     def show(self):
-        mp.plot(self.x,self.y,'.')
+        mp.plot(self.x,self.y,',')
         mp.savefig('file.png')
 
 hopalong = Hopalong()
