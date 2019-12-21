@@ -6,14 +6,14 @@ from numpy import sqrt
 
 class Hopalong:
 
-    def __init__(self, alpha=50.0, beta=50.0, gamma=0.0, random_points=10, iterations=1000):
+    def __init__(self, alpha=50.0, beta=50.0, gamma=1.0, random_points=25, iterations=20000):
         self.alpha = alpha
         self.beta = beta
         self.gamma = gamma
         self.random_points = random_points
         self.iterations = iterations
         self.x = list()
-        xx=[rand.random()*100 for _ in range(random_points)]
+        xx=[rand.random()*1000 for _ in range(random_points)]
         self.x.append(xx)
         yy=[self.y_function(0,i) for i in range(random_points)]
         self.y = list()
@@ -44,7 +44,7 @@ class Hopalong:
             return 0.
 
     def show(self):
-        mp.plot(self.x,self.y)
+        mp.plot(self.x,self.y,',')
         mp.savefig('file.png')
 
 hopalong = Hopalong()
