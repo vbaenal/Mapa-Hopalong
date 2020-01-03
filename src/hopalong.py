@@ -1,35 +1,34 @@
-import sys
-
 import matplotlib.pyplot as mp
 import random as rand
-from numpy import sqrt
+from math import sqrt
 
 class Hopalong:
 
-    def __init__(self, alpha=50.0, beta=50.0, gamma=1.0, random_points=25, iterations=20000):
+    def __init__(self, alpha=25.0, beta=50.0, delta=1, n_points=50, iterations=5000):
         self.alpha = alpha
         self.beta = beta
-        self.gamma = gamma
-        self.random_points = random_points
+        self.delta = delta
+        self.n_points = n_points
         self.iterations = iterations
         self.x = list()
-        xx=[rand.random()*1000 for _ in range(random_points)]
+        xx=[rand.randint(-100,100) for _ in range(n_points)]
         self.x.append(xx)
-        yy=[self.y_function(0,i) for i in range(random_points)]
+        yy=[rand.randint(-100,100) for _ in range(n_points)]
         self.y = list()
         self.y.append(yy)
+        self.iterate()
 
     def x_function(self, i, j):
-        return self.y[i][j]-self.sgn(self.x[i][j])*sqrt(abs(self.beta*self.x[i][j]-self.gamma))
+        return self.y[i][j]-self.sgn(self.x[i][j])*sqrt(abs(self.beta*self.x[i][j]-self.delta))
 
     def y_function(self, i, j):
         return self.alpha-self.x[i][j]
 
-    def iterar(self):
+    def iterate(self):
         for i in range(self.iterations):
             xx = []
             yy = []
-            for j in range(self.random_points):
+            for j in range(self.n_points):
                 xx.append(self.x_function(i,j))
                 yy.append(self.y_function(i,j))
             self.x.append(xx)
@@ -42,11 +41,3 @@ class Hopalong:
             return -1.
         else:
             return 0.
-
-    def show(self):
-        mp.plot(self.x,self.y,',')
-        mp.savefig('file.png')
-
-hopalong = Hopalong()
-hopalong.iterar()
-hopalong.show()
