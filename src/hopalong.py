@@ -4,17 +4,25 @@ from math import sqrt
 
 class Hopalong:
 
-    def __init__(self, alpha=25.0, beta=50.0, delta=1, n_points=50, iterations=5000):
+    def __init__(self, alpha=3., beta=2., delta=1, n_points=50, iterations=5000, xx=None, yy=None):
         self.alpha = alpha
         self.beta = beta
         self.delta = delta
         self.n_points = n_points
         self.iterations = iterations
         self.x = list()
-        xx=[rand.randint(-100,100) for _ in range(n_points)]
-        self.x.append(xx)
-        yy=[rand.randint(-100,100) for _ in range(n_points)]
         self.y = list()
+        if(xx == None or yy == None):
+            xx=[rand.uniform(-10.,10.) for _ in range(n_points)]
+            yy=[rand.uniform(-10.,10.) for _ in range(n_points)]
+        else:
+            if(len(xx) == len(yy)):
+                self.n_points = len(xx)
+            else:
+                xx = [0.]
+                yy = [0.]
+                self.n_points = 1
+        self.x.append(xx)
         self.y.append(yy)
         self.iterate()
 
