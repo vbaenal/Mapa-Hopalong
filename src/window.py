@@ -27,12 +27,9 @@ class HopalongWindow(qw.QMainWindow):
         
         self.alpha_text = qw.QLineEdit("3.")
         self.beta_text = qw.QLineEdit("2.")
+        self.delta_text = qw.QLineEdit("1.")
         self.n_points_text = qw.QLineEdit("25")
         self.iterations_text = qw.QLineEdit("5000")
-
-        self.delta_radio_button_0 = qw.QRadioButton("0")
-        self.delta_radio_button_0.setChecked(True)
-        self.delta_radio_button_1 = qw.QRadioButton("1")
 
         self.x_points_text = qw.QLineEdit("")
         self.y_points_text = qw.QLineEdit("")
@@ -44,6 +41,7 @@ class HopalongWindow(qw.QMainWindow):
         iterations_label = qw.QLabel("Iterations")
         x_points_label = qw.QLabel("X Points: ")
         y_points_label = qw.QLabel("Y Points: ")
+        self.fixed_points_label = qw.QLabel("Fixed Points: ")
 
         random_button.clicked.connect(self.reset)
         selected_points_button.clicked.connect(self.selected_points)
@@ -53,8 +51,7 @@ class HopalongWindow(qw.QMainWindow):
         elements_layout.addWidget(beta_label)
         elements_layout.addWidget(self.beta_text)
         elements_layout.addWidget(delta_label)
-        elements_layout.addWidget(self.delta_radio_button_0)
-        elements_layout.addWidget(self.delta_radio_button_1)
+        elements_layout.addWidget(self.delta_text)
         elements_layout.addWidget(n_points_label)
         elements_layout.addWidget(self.n_points_text)
         elements_layout.addWidget(iterations_label)
@@ -65,15 +62,16 @@ class HopalongWindow(qw.QMainWindow):
         elements_layout.addWidget(y_points_label)
         elements_layout.addWidget(self.y_points_text)
         elements_layout.addWidget(selected_points_button)
+        elements_layout.addWidget(self.fixed_points_label)
         main_layout.addWidget(hopalong_canvas)
-        self.addToolBar(qc.Qt.BottomToolBarArea,
-                        NavigationToolBar(hopalong_canvas, self))
+        #self.addToolBar(qc.Qt.BottomToolBarArea,
+        #                NavigationToolBar(hopalong_canvas, self))
 
         self._dynamic_ax = hopalong_canvas.figure.subplots()
 
         alpha = float(self.alpha_text.text())
         beta = float(self.beta_text.text())
-        delta = self.delta_state()
+        delta = float(self.delta_text.text())
         n_points = int(self.n_points_text.text())
         iterations = int(self.iterations_text.text())
 
@@ -82,7 +80,7 @@ class HopalongWindow(qw.QMainWindow):
     def reset(self):
         alpha = float(self.alpha_text.text())
         beta = float(self.beta_text.text())
-        delta = self.delta_state()
+        delta = float(self.delta_text.text())
         n_points = int(self.n_points_text.text())
         iterations = int(self.iterations_text.text())
 
@@ -91,7 +89,7 @@ class HopalongWindow(qw.QMainWindow):
     def selected_points(self):
         alpha = float(self.alpha_text.text())
         beta = float(self.beta_text.text())
-        delta = self.delta_state()
+        delta = float(self.delta_text.text())
         n_points = 0
         iterations = int(self.iterations_text.text())
         
@@ -112,6 +110,7 @@ class HopalongWindow(qw.QMainWindow):
     def update_function(self, alpha, beta, delta, n_points, iterations, x=None, y=None):
         self._dynamic_ax.clear()
         hopa = h.Hopalong(alpha, beta, delta, n_points, iterations, x, y)
+        self.fixed_points_label.setText("Fixed points: " + str(hopa.fixed_points()))
         x = hopa.x
         y = hopa.y
         self._dynamic_ax.plot(x, y, ',')

@@ -1,10 +1,12 @@
+#!/usr/bin/sage -python
 import matplotlib.pyplot as mp
 import random as rand
 from math import sqrt
+from sage.all import *
 
 class Hopalong:
 
-    def __init__(self, alpha=3., beta=2., delta=1, n_points=50, iterations=5000, xx=None, yy=None):
+    def __init__(self, alpha=3., beta=2., delta=1., n_points=50, iterations=5000, xx=None, yy=None):
         self.alpha = alpha
         self.beta = beta
         self.delta = delta
@@ -26,19 +28,19 @@ class Hopalong:
         self.y.append(yy)
         self.iterate()
 
-    def x_function(self, i, j):
-        return self.y[i][j]-self.sgn(self.x[i][j])*sqrt(abs(self.beta*self.x[i][j]-self.delta))
+    def x_function(self, x, y):
+        return y-self.sgn(x)*sqrt(abs(self.beta*x-self.delta))
 
-    def y_function(self, i, j):
-        return self.alpha-self.x[i][j]
+    def y_function(self, x, y):
+        return self.alpha-x
 
     def iterate(self):
         for i in range(self.iterations):
             xx = []
             yy = []
             for j in range(self.n_points):
-                xx.append(self.x_function(i,j))
-                yy.append(self.y_function(i,j))
+                xx.append(self.x_function(self.x[i][j], self.y[i][j]))
+                yy.append(self.y_function(self.x[i][j], self.y[i][j]))
             self.x.append(xx)
             self.y.append(yy)
 
@@ -49,3 +51,13 @@ class Hopalong:
             return -1.
         else:
             return 0.
+
+    def xy_functions(self,x, y):
+        return (self.x_function(x,y), self.y_function(x,y))
+
+    def fixed_points(self):
+        x, y = var('x, y')
+        functions = vector([y-self.sgn(x)*sqrt(abs(self.beta*x-self.delta)), self.alpha-x])
+        #return solve([functions[0] == x, functions[1] == y], x, y)
+        return solve([self.x_function(x,y) == x, self.y_function(x,y) == y], x, y)
+        
