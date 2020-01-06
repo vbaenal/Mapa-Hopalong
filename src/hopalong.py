@@ -1,4 +1,3 @@
-#!/usr/bin/sage -python
 import matplotlib.pyplot as mp
 import random as rand
 from math import sqrt
