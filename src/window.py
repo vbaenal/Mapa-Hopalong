@@ -22,14 +22,17 @@ class DataWindow(qw.QMainWindow):
         self.k_per_2 = qw.QLabel("2-Periódicos: " + str(hopalong.k_periods_2()))
         self.k_per_3 = qw.QLabel("3-Periódicos: " + str(hopalong.k_periods_3()))
         self.k_per_4 = qw.QLabel("4-Periódicos: " + str(hopalong.k_periods_4()))
-        self.lyapunov = qw.QLabel("Exponente de Lyapunov: " + str(hopalong.exp_lyapunov()))
+        lyapunov = hopalong.exp_lyapunov()
+        if (lyapunov <= 0):
+            self.lyapunov = qw.QLabel("Exponente de Lyapunov: " + str(lyapunov) + " => Órbita no caótica")
+        else:
+            self.lyapunov = qw.QLabel("Exponente de Lyapunov: " + str(lyapunov) + " => Órbita caótica")
 
         main_layout.addWidget(self.fixed_points_label)
         main_layout.addWidget(self.k_per_2)
         main_layout.addWidget(self.k_per_3)
         main_layout.addWidget(self.k_per_4)
         main_layout.addWidget(self.lyapunov)
-
 
 class HopalongWindow(qw.QMainWindow):
     def __init__(self):
@@ -135,7 +138,7 @@ class HopalongWindow(qw.QMainWindow):
 
     def view_data(self):
         widget = DataWindow(self.hopa, self)
-        widget.resize(500,500)
+        widget.resize(100,200)
         widget.show()
 
 
@@ -143,7 +146,7 @@ if __name__ == "__main__":
     app = qw.QApplication(sys.argv)
 
     widget = HopalongWindow()
-    widget.resize(500,500)
+    widget.resize(800,650)
     widget.show()
 
     sys.exit(app.exec_())
