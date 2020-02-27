@@ -19,9 +19,6 @@ class DataWindow(qw.QMainWindow):
         main_layout = qw.QVBoxLayout(self._main)
 
         self.fixed_points_label = qw.QLabel("Puntos fijos: " + str(hopalong.fixed_points()))
-        self.k_per_2 = qw.QLabel("2-Periódicos: " + str(hopalong.k_periods_2()))
-        self.k_per_3 = qw.QLabel("3-Periódicos: " + str(hopalong.k_periods_3()))
-        self.k_per_4 = qw.QLabel("4-Periódicos: " + str(hopalong.k_periods_4()))
         lyapunov = hopalong.exp_lyapunov()
         if (lyapunov <= 0):
             self.lyapunov = qw.QLabel("Exponente de Lyapunov: " + str(lyapunov) + " => Órbita no caótica")
@@ -29,9 +26,6 @@ class DataWindow(qw.QMainWindow):
             self.lyapunov = qw.QLabel("Exponente de Lyapunov: " + str(lyapunov) + " => Órbita caótica")
 
         main_layout.addWidget(self.fixed_points_label)
-        main_layout.addWidget(self.k_per_2)
-        main_layout.addWidget(self.k_per_3)
-        main_layout.addWidget(self.k_per_4)
         main_layout.addWidget(self.lyapunov)
 
 class HopalongWindow(qw.QMainWindow):

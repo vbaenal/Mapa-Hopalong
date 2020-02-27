@@ -72,36 +72,6 @@ class Hopalong:
                     res.append([xx, yy, "Atractivo"])
         return res
 
-    def k_periods_2(self):
-        x, y = var('x, y')
-        fx = y-x/abs(x)*sqrt(abs(self.beta*x-self.delta))
-        fy = self.alpha-x
-        fxx = fx(x,y)
-        fyy = fy(x)
-        return solve([fxx == x, fyy == y], x, y)
-    
-    def k_periods_3(self):
-        x, y = var('x, y')
-        fx = y-x/abs(x)*sqrt(abs(self.beta*x-self.delta))
-        fy = self.alpha-x
-        fx2 = fx(x,y)
-        fy2 = fy(x)
-        fx3 = fx2(x,y)
-        fy3 = fy2(x)
-        return solve([fx3 == x, fy3 == y], x, y)
-    
-    def k_periods_4(self):
-        x, y = var('x, y')
-        fx = y-x/abs(x)*sqrt(abs(self.beta*x-self.delta))
-        fy = self.alpha-x
-        fx2 = fx(x,y)
-        fy2 = fy(x)
-        fx3 = fx2(x,y)
-        fy3 = fy2(x)
-        fx4 = fx3(x,y)
-        fy4 = fy3(x)
-        return solve([fx4 == x, fy4 == y], x, y)
-            
     def xy_functions(self,x, y):
         return (self.x_function(x,y), self.y_function(x,y))
 
@@ -114,5 +84,4 @@ class Hopalong:
         Df = matrix(self.hopa_jacobian())
         for i in range(self.iterations):
             dfn*=det(Df(x=self.x[i][0], y=self.y[i][0]))
-        return 1/(2*self.iterations)*log(dfn)
-        
+        return 1/(2*self.iterations)*log(dfn)      
